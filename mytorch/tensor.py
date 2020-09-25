@@ -104,7 +104,10 @@ class Tensor:
     # ----------------------
     def backward(self):
         """Kicks off autograd backward (see writeup for hints)"""
-        raise Exception("TODO: Kick off `autograd_engine.backward()``")
+        # DONE: Kickoff `autograd_engine.backward()`
+        grad_of_outputs = np.ones(self.data.shape)
+        grad_of_outputs = Tensor(grad_of_outputs)
+        autograd_engine.backward(self.grad_fn, grad_of_outputs)
 
     # ------------------------------------------
     # Tensor Operations (ARE part of comp graph)
