@@ -189,9 +189,9 @@ class Mul(Function):
     def backward(ctx, grad_output):
         a, b = ctx.saved_tensors
 
-        grad_a = b.data * grad_output.data
+        grad_a = tensor.Tensor(b.data * grad_output.data)
         # dL/db = dout/db * dL/dout
-        grad_b = a.data * grad_output.data
+        grad_b = tensor.Tensor(a.data * grad_output.data)
 
         return grad_a, grad_b
 
@@ -225,10 +225,10 @@ class Div(Function):
     def backward(ctx, grad_output):
         a, b = ctx.saved_tensors
 
-        grad_a = grad_output.data / b.data
+        grad_a = tensor.Tensor(grad_output.data / b.data)
         # dL/db = dout/db * dL/dout
         grad_b = (-a.data * grad_output.data) / (b.data ** 2)
-
+        grad_b = tensor.Tensor(grad_b)
         return grad_a, grad_b
 
 
