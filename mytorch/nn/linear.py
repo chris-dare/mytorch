@@ -40,7 +40,11 @@ class Linear(Module):
         """
         Args:
             x (Tensor): (batch_size, in_features)
-        Returns:        
+        Returns:
             Tensor: (batch_size, out_features)
         """
-        raise Exception("TODO: Implement forward by calling the operations you've made")
+        # check that the input is a tensor
+        if not (type(x) == Tensor or type(self.weight) == Tensor):
+            raise Exception(f"X must be Tensor. Got {type(x)}")
+        output = x @ self.weight.T() + self.bias
+        return output
