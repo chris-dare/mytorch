@@ -232,6 +232,52 @@ class Div(Function):
         return grad_a, grad_b
 
 
+class MatMul(Function):
+    @staticmethod
+    def forward(ctx, a, b):
+        # Check that inputs are tensors of same shape
+        if not (type(a) == tensor.Tensor and type(b) == tensor.Tensor):
+            raise Exception(
+                "Both args must be Tensors: {}, {}".format(
+                    type(a).__name__, type(b).__name__
+                )
+            )
+        # check that input shapes are compliant for matrix multiplication
+        if a.data.shape[1] != b.data.shape[0]:
+            raise Exception(f"Shape mismatch error. Got {a.shape}, {b.shape}")
+        # Save inputs to access later in backward pass.
+        ctx.save_for_backward(a, b)
+
+        requires_grad = a.requires_grad or b.requires_grad
+
+        c = tensor.Tensor(
+            np.matmul(a.data, b.data),
+            requires_grad=requires_grad,
+            is_leaf=not requires_grad,
+        )
+
+        return c
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        a, b = ctx.saved_tensors
+        if not (type(a) == tensor.Tensor and type(b) == tensor.Tensor):
+            raise Exception(
+                "Both args must be Tensors: {}, {}".format(
+                    type(a).__name__, type(b).__name__
+                )
+            )
+        # for c = matmal(a,b), where c belongs to a computational graph...
+        # the derivative of y wrt a is the dy/dc * transpose(b)
+        # import pdb
+        # pdb.set_trace()
+        grad_a = tensor.Tensor(np.matmul(grad_output.data, b.T().data))
+        # dL/db = dout/db * dL/dout
+        grad_b = tensor.Tensor(np.matmul(a.T().data, grad_output.data))
+
+        return grad_a, grad_b
+
+
 class Sum(Function):
     @staticmethod
     def forward(ctx, a, axis, keepdims):

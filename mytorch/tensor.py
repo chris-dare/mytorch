@@ -149,6 +149,9 @@ class Tensor:
     def __sub__(self, other):
         return F.Sub.apply(self, other)
 
+    def __matmul__(self, other):
+        return F.MatMul.apply(self, other)
+
     def __mul__(self, other):
         return F.Mul.apply(self, other)
 
