@@ -1,3 +1,5 @@
+import pdb
+
 from mytorch import tensor
 
 
@@ -10,17 +12,22 @@ def backward(grad_fn, grad_of_outputs):
     Returns:
         No return statement needed.
     """
-    # if type(arg).__name__ != "AccumulateGrad":
-    #     if
 
-    # 1) Calculate gradients of final node w.r.t. to the current nodes parents
-    grad_of_outputs = grad_fn.backward(grad_fn.ctx, grad_of_outputs)
+    if grad_fn is not None:
+        grad_of_outputs = grad_fn.apply(grad_of_outputs)
+        print(f"Started new call to backward. Grad function is {grad_fn}")
+        next_fn_size = len(grad_fn.next_functions)
+        print(f"size is {next_fn_size}")
+        print(f"Grad of outputs: {grad_of_outputs}")
 
-    # 2) Pass gradient onto current node's beloved parents (recursive DFS)
-    a, b = grad_fn.ctx.saved_tensors
-
-    backward(a.grad_fn, grad_of_outputs)
-    backward(b.grad_fn, grad_of_outputs)
+        for index in range(next_fn_size):
+            # if grad_fn has no next_functions, nothing happens.
+            next_function = grad_fn.next_functions[index]
+            print(f"Function is {next_function}")
+            if next_function is not None:
+                print(f"Backpropagating from function {next_function}")
+                print(grad_of_outputs)
+                backward(next_function, grad_of_outputs[index])
 
 
 class Function:
@@ -55,27 +62,27 @@ class Function:
 
         # TODO: Complete code below
         # 1) For each parent tensor in args, add their node to `backward_function.next_functions`
-        #    Note: Parents may/may not already have their own nodes. How do we handle this?
-        #    Note: Parents may not need to be connected to the comp graph. How do we handle this?
-        #    (see Appendix A.1 for hints)
         for parent in args:
             # first check if this is tensor is a parent node
-            if parent.is_leaf and parent.requires_grad:
-                # we'll need to accumulate the gradient so we initialize
-                # Accumulate grad
-                next_function = AccumulateGrad(parent)
-            # then check if this is a backward function node
-            elif not parent.is_leaf and parent.requires_grad:
-                # then it's a backward function
-                # we'll need to add the backward function to next function
-                next_function = parent.grad_fn
-            # if it's none of the above, then this is a constant node
-            else:
-                next_function = None
+            #    Note: Parents may not need to be connected to the comp graph. How do we handle this?
+            #    (see Appendix A.1 for hints)
+            if type(parent) == tensor.Tensor:
+                if parent.is_leaf and parent.requires_grad:
+                    #    Note: Parents may/may not already have their own nodes. How do we handle this?
+                    # we'll need to accumulate the gradient so we initialize accumulate grad
+                    next_function = AccumulateGrad(parent)
+                # then check if this is a backward function node
+                elif not parent.is_leaf and parent.requires_grad:
+                    # then it's a backward function
+                    # we'll need to add the backward function to next function
+                    next_function = parent.grad_fn
+                # if it's none of the above, then this is a constant node
+                else:
+                    next_function = None
 
-            backward_function.next_functions.append(next_function)
+                backward_function.next_functions.append(next_function)
 
-        # 2) Store current node in output tensor (see `tensor.py` for ideas)
+            # 2) Store current node in output tensor (see `tensor.py` for ideas)
         output_tensor.grad_fn = backward_function
 
         return output_tensor
