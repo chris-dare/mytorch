@@ -17,8 +17,9 @@ class SGD(Optimizer):
     Inherits from:
         Optimizer (optim.optimizer.Optimizer)
     """
+
     def __init__(self, params, lr=0.001, momentum=0.0):
-        super().__init__(params) # inits parent with network params
+        super().__init__(params)  # inits parent with network params
         self.lr = lr
         self.momentum = momentum
 
@@ -27,4 +28,12 @@ class SGD(Optimizer):
 
     def step(self):
         """Updates params based on gradients stored in param tensors"""
-        raise Exception("TODO: Implement SGD.step()")
+        for idx in range(len(self.params)):
+
+            self.momentums[idx] = (self.momentum * self.momentums[idx]) - (
+                self.lr * self.params[idx].grad.data
+            )
+            # self.params[idx].data = self.params[idx].data - (
+            #     self.lr * self.params[idx].grad.data
+            # )
+            self.params[idx].data = self.params[idx].data + self.momentums[idx]
