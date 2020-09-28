@@ -392,11 +392,16 @@ def cross_entropy(predicted, target):
     # Tip: You can implement XELoss all here, without creating a new subclass of Function.
     #      However, if you'd prefer to implement a Function subclass you're free to.
     #      Just be sure that nn.loss.CrossEntropyLoss calls it properly.
+    # TODO: Document me after submission
+    a = tensor.Tensor(np.max(predicted.data, axis=1, keepdims=True))
 
-    # Tip 2: Remember to divide the loss by batch_size; this is equivalent
-    #        to reduction='mean' in PyTorch's nn.CrossEntropyLoss
+    log_sum = (predicted - a).exp().sum(axis=1, keepdims=True).log()
+    rhs = a + log_sum
+    XE = predicted - rhs
 
-    raise Exception("TODO: Implement XELoss for comp graph")
+    one_hot_targets = to_one_hot(target, num_classes)
+    loss = ((one_hot_targets * XE).sum() / tensor.Tensor(batch_size)).neg()
+    return loss
 
 
 def to_one_hot(arr, num_classes):
