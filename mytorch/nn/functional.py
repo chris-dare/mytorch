@@ -125,7 +125,7 @@ class Sub(Function):
         # Check that inputs are tensors of same shape
         if (
             not (type(a).__name__ == "Tensor" and type(b).__name__ == "Tensor")
-            or a.data.shape != b.data.shape
+            # or a.data.shape != b.data.shape
         ):
             raise Exception(
                 "Both args must be Tensors: {}, {}".format(
@@ -202,7 +202,7 @@ class Div(Function):
         # Check that inputs are tensors of same shape
         if (
             not (type(a).__name__ == "Tensor" and type(b).__name__ == "Tensor")
-            or a.data.shape != b.data.shape
+            # or a.data.shape != b.data.shape
         ):
             raise Exception(
                 "Both args must be Tensors: {}, {}".format(
