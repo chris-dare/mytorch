@@ -1,5 +1,6 @@
 import mytorch.nn.functional as F
 from mytorch.nn.module import Module
+from mytorch.tensor import Tensor
 
 
 class ReLU(Module):
@@ -15,6 +16,7 @@ class ReLU(Module):
     Inherits from:
         Module (mytorch.nn.module.Module)
     """
+
     def __init__(self):
         super().__init__()
 
@@ -28,6 +30,8 @@ class ReLU(Module):
         """
 
         # Complete ReLU(Function) class in functional.py and call it appropriately here
-        raise Exception("TODO!")
+        x = F.ReLU.apply(x)
+        return x
+
 
 # You can define more activation functions below (after hw1p1)

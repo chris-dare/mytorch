@@ -425,3 +425,30 @@ def to_one_hot(arr, num_classes):
     a = np.zeros((arr.shape[0], num_classes))
     a[np.arange(len(a)), arr] = 1
     return tensor.Tensor(a, requires_grad=True)
+
+
+class ReLU(Function):
+    @staticmethod
+    def forward(ctx, z):
+        # Check that both args are tensors
+        if not (type(z) == tensor.Tensor):
+            raise Exception(f"Input argument must be Tensor. Got: {type(z)}")
+
+        # Save inputs to access later in backward pass.
+        ctx.save_for_backward(z)
+
+        requires_grad = z.requires_grad
+        z.data = z.data * (z.data > 0)
+        output = tensor.Tensor(
+            z.data, requires_grad=requires_grad, is_leaf=not requires_grad
+        )
+        return output
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        # retrieve forward inputs that we stored
+        z = ctx.saved_tensors[0]
+        # calculate gradient of output w.r.t. the input
+        # dL/dz = dout/dz * dL/dout
+        grad_z = tensor.Tensor((z.data > 0).astype(z.data.dtype)) * grad_output
+        return grad_z
