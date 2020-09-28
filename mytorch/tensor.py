@@ -137,6 +137,11 @@ class Tensor:
         """Element-wise log of this tensor, adding to comp graph"""
         return F.Log.apply(self)
 
+    def exp(self):
+        """"""
+        return F.Exp.apply(self)
+
+    def neg(self):
     def __add__(self, other):
         """Links "+" to the comp. graph
         Args:

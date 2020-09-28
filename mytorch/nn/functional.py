@@ -316,6 +316,37 @@ class Sum(Function):
 # TODO: Implement more Functions below
 
 
+class Exp(Function):
+    @staticmethod
+    def forward(ctx, a):
+        # Check that inputs is tensors
+        if not (type(a) == tensor.Tensor):
+            raise Exception(f"Input argument must be Tensor. Got: {type(a)}")
+        # Save inputs to access later in backward pass.
+        ctx.save_for_backward(a)
+
+        requires_grad = a.requires_grad
+
+        c = tensor.Tensor(
+            np.exp(a.data), requires_grad=requires_grad, is_leaf=not requires_grad
+        )
+
+        return c
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        a = ctx.saved_tensors[0]
+
+        # dL/da = dout/da * dL/dout
+
+        grad = (np.ones(a.shape) * np.exp(a.data)) * grad_output.data
+        grad_a = tensor.Tensor(
+            grad, requires_grad=a.requires_grad, is_leaf=not a.requires_grad
+        )
+        return grad_a
+
+
+class Neg(Function):
 def cross_entropy(predicted, target):
     """Calculates Cross Entropy Loss (XELoss) between logits and true labels.
     For MNIST, don't call this function directly; use nn.loss.CrossEntropyLoss instead.
