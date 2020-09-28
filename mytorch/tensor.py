@@ -142,6 +142,9 @@ class Tensor:
         return F.Exp.apply(self)
 
     def neg(self):
+        """"""
+        return F.Neg.apply(self)
+
     def __add__(self, other):
         """Links "+" to the comp. graph
         Args:
