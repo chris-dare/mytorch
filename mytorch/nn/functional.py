@@ -459,3 +459,47 @@ class ReLU(Function):
         # dL/dz = dout/dz * dL/dout
         grad_z = tensor.Tensor((z.data > 0).astype(z.data.dtype)) * grad_output
         return grad_z
+
+
+class Conv1d(Function):
+    @staticmethod
+    def forward(ctx, x, weight, bias, stride):
+        """The forward/backward of a Conv1d Layer in the comp graph.
+
+        Notes:
+            - Make sure to implement the vectorized version of the pseudocode
+            - See Lec 10 slides # TODO: FINISH LOCATION OF PSEUDOCODE
+            - No, you won't need to implement Conv2d for this homework.
+
+        Args:
+            x (Tensor): (batch_size, in_channel, input_size) input data
+            weight (Tensor): (out_channel, in_channel, kernel_size)
+            bias (Tensor): (out_channel,)
+            stride (int): Stride of the convolution
+
+        Returns:
+            Tensor: (batch_size, out_channel, output_size) output data
+        """
+        # For your convenience: ints for each size
+        batch_size, in_channel, input_size = x.shape
+        out_channel, _, kernel_size = weight.shape
+
+        # TODO: Save relevant variables for backward pass
+
+        # TODO: Get output size by finishing & calling get_conv1d_output_size()
+        # output_size = get_conv1d_output_size(None, None, None)
+
+        # TODO: Initialize output with correct size
+        # out = np.zeros(())
+
+        # TODO: Calculate the Conv1d output.
+        # Remember that we're working with np.arrays; no new operations needed.
+
+        # TODO: Put output into tensor with correct settings and return
+        raise NotImplementedError("Implement functional.Conv1d.forward()!")
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        # TODO: Finish Conv1d backward pass. It's surprisingly similar to the forward pass.
+        raise NotImplementedError("Implement functional.Conv1d.backward()!")
+
