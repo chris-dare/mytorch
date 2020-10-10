@@ -42,3 +42,10 @@ class Tanh(Module):
     def forward(self, x):
         return F.Tanh.apply(x)
 
+
+class Sigmoid(Module):
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, x):
+        return F.Sigmoid.apply(x)
