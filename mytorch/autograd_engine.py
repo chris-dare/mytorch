@@ -15,19 +15,16 @@ def backward(grad_fn, grad_of_outputs):
 
     if grad_fn is not None:
         grad_of_outputs = grad_fn.apply(grad_of_outputs)
-        print(f"Started new call to backward. Grad function is {grad_fn}")
         next_fn_size = len(grad_fn.next_functions)
-        print(f"size is {next_fn_size}")
-        print(f"Grad of outputs: {grad_of_outputs}")
-
         for index in range(next_fn_size):
             # if grad_fn has no next_functions, nothing happens.
             next_function = grad_fn.next_functions[index]
-            print(f"Function is {next_function}")
             if next_function is not None:
-                print(f"Backpropagating from function {next_function}")
-                print(grad_of_outputs)
-                backward(next_function, grad_of_outputs[index])
+                if type(grad_of_outputs) == tensor.Tensor:
+                    gradient = grad_of_outputs
+                else:
+                    gradient = grad_of_outputs[index]
+                backward(next_function, gradient)
 
 
 class Function:
