@@ -527,3 +527,18 @@ def get_conv1d_output_size(input_size, kernel_size, stride):
     # TODO: implement the formula in the writeup. One-liner; don't overthink
     raise NotImplementedError("TODO: Complete functional.get_conv1d_output_size()!")
 
+
+class Sigmoid(Function):
+    @staticmethod
+    def forward(ctx, a):
+        b_data = np.divide(1.0, np.add(1.0, np.exp(-a.data)))
+        ctx.out = b_data[:]
+        b = tensor.Tensor(b_data, requires_grad=a.requires_grad)
+        b.is_leaf = not b.requires_grad
+        return b
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        b = ctx.out
+        grad = grad_output.data * b * (1 - b)
+        return tensor.Tensor(grad)
