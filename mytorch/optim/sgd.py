@@ -6,9 +6,9 @@ from mytorch.optim.optimizer import Optimizer
 
 class SGD(Optimizer):
     """Stochastic Gradient Descent optimizer.
-    
+
     >>> optimizer = SGD(model.parameters(), lr=0.1, momentum=0.9)
-    
+
     Args:
         params (list or iterator): <some module>.parameters()
         lr (float): learning rate (eta)

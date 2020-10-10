@@ -35,3 +35,17 @@ class ReLU(Module):
 
 
 # You can define more activation functions below (after hw1p1)
+class Tanh(Module):
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, x):
+        return F.Tanh.apply(x)
+
+
+class Sigmoid(Module):
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, x):
+        return F.Sigmoid.apply(x)

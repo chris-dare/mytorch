@@ -1,5 +1,6 @@
 from mytorch.nn.module import Module
 
+
 class Sequential(Module):
     """Passes input data through stored layers, in order
 
@@ -10,6 +11,7 @@ class Sequential(Module):
     Inherits from:
         Module (nn.module.Module)
     """
+
     def __init__(self, *layers):
         super().__init__()
         self.layers = layers
@@ -46,5 +48,5 @@ class Sequential(Module):
             Tensor: Output after passing through layers
         """
         for layer in self.layers:
-            output = layer.forward(output)
-        return output
+            x = layer.forward(x)
+        return x
