@@ -503,3 +503,27 @@ class Conv1d(Function):
         # TODO: Finish Conv1d backward pass. It's surprisingly similar to the forward pass.
         raise NotImplementedError("Implement functional.Conv1d.backward()!")
 
+
+def get_conv1d_output_size(input_size, kernel_size, stride):
+    """Gets the size of a Conv1d output.
+
+    Notes:
+        - This formula should NOT add to the comp graph.
+        - Yes, Conv2d would use a different formula,
+        - But no, you don't need to account for Conv2d here.
+
+        - If you want, you can modify and use this function in HW2P2.
+            - You could add in Conv1d/Conv2d handling, account for padding, dilation, etc.
+            - In that case refer to the torch docs for the full formulas.
+
+    Args:
+        input_size (int): Size of the input to the layer
+        kernel_size (int): Size of the kernel
+        stride (int): Stride of the convolution
+
+    Returns:
+        int: size of the output as an int (not a Tensor or np.array)
+    """
+    # TODO: implement the formula in the writeup. One-liner; don't overthink
+    raise NotImplementedError("TODO: Complete functional.get_conv1d_output_size()!")
+
