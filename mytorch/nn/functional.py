@@ -50,6 +50,21 @@ class Reshape(Function):
         return tensor.Tensor(grad_output.data.reshape(ctx.shape)), None
 
 
+class Slice(Function):
+    @staticmethod
+    def forward(ctx, x, indices):
+        """
+        Args:
+            x (tensor): Tensor object that we need to slice
+            indices (int,list,Slice): This is the key passed to the __getitem__ function of the Tensor object when it is sliced using [ ] notation.
+        """
+        raise NotImplementedError("Implemented Slice.forward")
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        raise NotImplementedError("Implemented Slice.backward")
+
+
 class Log(Function):
     @staticmethod
     def forward(ctx, a):
