@@ -66,6 +66,33 @@ class Tensor:
     def __len__(self,):
         return len(self.data)
 
+    
+    # math functions
+    def __add__(self, other):
+        """Links "+" to the comp. graph
+        Args:
+            other (Tensor): other tensor to add
+        Returns:
+            Tensor: result after adding
+        """
+        return F.Add.apply(self, other)
+
+    def __matmul__(self, other):
+        return F.MatMul.apply(self, other)
+
+    def __mul__(self, other):
+        return F.Mul.apply(self, other)
+
+    def __sub__(self, other):
+        return F.Sub.apply(self, other)
+
+    
+    def sum(self, axis=None, keepdims=False):
+        return F.Sum.apply(self, axis, keepdims)
+
+    def __truediv__(self, other):
+        return F.Div.apply(self, other)
+
     # ------------------------------------
     # [Not important] For printing tensors
     # ------------------------------------
@@ -219,28 +246,4 @@ class Tensor:
     # TODO: Implement the unsqueeze operation
     raise NotImplementedError('Use existing functions in functional.py to implement this operation!')
 
-    def __add__(self, other):
-        """Links "+" to the comp. graph
-        Args:
-            other (Tensor): other tensor to add
-        Returns:
-            Tensor: result after adding
-        """
-        return F.Add.apply(self, other)
 
-    def __sub__(self, other):
-        return F.Sub.apply(self, other)
-
-    def __matmul__(self, other):
-        return F.MatMul.apply(self, other)
-
-    def __mul__(self, other):
-        return F.Mul.apply(self, other)
-
-    def __truediv__(self, other):
-        return F.Div.apply(self, other)
-
-    def sum(self, axis=None, keepdims=False):
-        return F.Sum.apply(self, axis, keepdims)
-
-    # TODO: Implement more functions below
