@@ -5,6 +5,41 @@ from mytorch.nn import functional as F
 from mytorch.autograd_engine import AccumulateGrad
 
 
+def cat(seq,dim=0):
+    '''
+    Concatenates the given sequence of seq tensors in the given dimension.
+    All tensors must either have the same shape (except in the concatenating dimension) or be empty.
+    
+    NOTE: If you are not sure what this operation does, please revisit Recitation 0.
+
+    Args:
+        seq (list of Tensors) - List of interegers to concatenate
+        dim (int) - The dimension along which to concatenate
+    Returns:
+        Tensor - Concatenated tensor
+
+    Example:
+
+        seq
+        [[[3 3 4 1]
+          [0 3 1 4]],
+         [[4 2 0 0]
+          [3 0 4 0]
+          [1 4 4 3]],
+         [[3 2 3 1]]]
+        
+        tensor.cat(seq,0)
+        [[3 3 4 1]
+         [0 3 1 4]
+         [4 2 0 0]
+         [3 0 4 0]
+         [1 4 4 3]
+         [3 2 3 1]]
+    '''
+    # TODO: invoke the appropriate function from functional.py. One-liner; don't overthink
+    raise NotImplementedError("TODO: Complete functional.Cat!")
+
+
 class Tensor:
     """Tensor object, similar to `torch.Tensor`
     A wrapper around a NumPy array that help it interact with MyTorch.
