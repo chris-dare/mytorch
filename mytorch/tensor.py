@@ -5,8 +5,8 @@ from mytorch.nn import functional as F
 from mytorch.autograd_engine import AccumulateGrad
 
 
-def cat(seq,dim=0):
-    '''
+def cat(seq, dim=0):
+    """
     Concatenates the given sequence of seq tensors in the given dimension.
     All tensors must either have the same shape (except in the concatenating dimension) or be empty.
     
@@ -35,7 +35,7 @@ def cat(seq,dim=0):
          [3 0 4 0]
          [1 4 4 3]
          [3 2 3 1]]
-    '''
+    """
     # TODO: invoke the appropriate function from functional.py. One-liner; don't overthink
     raise NotImplementedError("TODO: Complete functional.Cat!")
 
@@ -66,7 +66,6 @@ class Tensor:
     def __len__(self,):
         return len(self.data)
 
-    
     # math functions
     def __add__(self, other):
         """Links "+" to the comp. graph
@@ -84,13 +83,12 @@ class Tensor:
         return F.Mul.apply(self, other)
 
     def __pow__(self, other):
-        raise(NotImplementedError)
+        raise (NotImplementedError)
         # return F.Pow.apply(self,other)
 
     def __sub__(self, other):
         return F.Sub.apply(self, other)
 
-    
     def sum(self, axis=None, keepdims=False):
         return F.Sum.apply(self, axis, keepdims)
 
@@ -218,36 +216,37 @@ class Tensor:
         """"""
         return F.Neg.apply(self)
 
-    def unsqueeze(self,dim=0):
-    """ 
-    Returns a new tensor with a dimension of size one inserted at the specified position. 
-    
-    NOTE: If you are not sure what this operation does, please revisit Recitation 0.
-    
-    Example:
-        a
-        [[1 2 3]
-         [4 5 6]]
+    def unsqueeze(self, dim=0):
+        """ 
+        Returns a new tensor with a dimension of size one inserted at the specified position. 
         
-        a.unsqueeze(0)
-        [[[1 2 3]
-          [4 5 6]]]
+        NOTE: If you are not sure what this operation does, please revisit Recitation 0.
         
-        a.unsqueeze(1)
-        [[[1 2 3]]
-        
-         [[4 5 6]]]
-        
-        a.unsqueeze(2)
-        [[[1]
-          [2]
-          [3]]
-        
-         [[4]
-          [5]
-          [6]]]
-    """
-    # TODO: Implement the unsqueeze operation
-    raise NotImplementedError('Use existing functions in functional.py to implement this operation!')
-
+        Example:
+            a
+            [[1 2 3]
+            [4 5 6]]
+            
+            a.unsqueeze(0)
+            [[[1 2 3]
+            [4 5 6]]]
+            
+            a.unsqueeze(1)
+            [[[1 2 3]]
+            
+            [[4 5 6]]]
+            
+            a.unsqueeze(2)
+            [[[1]
+            [2]
+            [3]]
+            
+            [[4]
+            [5]
+            [6]]]
+        """
+        # TODO: Implement the unsqueeze operation
+        raise NotImplementedError(
+            "Use existing functions in functional.py to implement this operation!"
+        )
 
