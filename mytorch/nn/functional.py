@@ -4,6 +4,24 @@ import mytorch.tensor as tensor
 from mytorch.autograd_engine import Function
 
 
+class Cat(Function):
+    @staticmethod
+    def forward(ctx, *args):
+        """
+        Args:
+            args (list): [*seq, dim] 
+        
+        NOTE: seq (list of tensors) contains the tensors that we wish to concatenate while dim (int) is the dimension along which we want to concatenate 
+        """
+        *seq, dim = args
+
+        raise NotImplementedError("Implement Cat.forward")
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        raise NotImplementedError("Implement Cat.backward")
+
+
 def unbroadcast(grad, shape, to_keep=0):
     while len(grad.shape) != len(shape):
         grad = grad.sum(axis=0)
