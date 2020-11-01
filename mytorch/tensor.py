@@ -24,6 +24,13 @@ class Tensor:
         self.grad = None
         self.is_parameter = is_parameter
 
+    def __getitem__(self, key):
+        # TODO: Implement the __getitem__ operation. Simply invoke the appropriate function from functional.py
+        raise NotImplementedError("TODO: Implement functional.Slice")
+
+    def __len__(self,):
+        return len(self.data)
+
     # ------------------------------------
     # [Not important] For printing tensors
     # ------------------------------------
@@ -144,6 +151,38 @@ class Tensor:
     def neg(self):
         """"""
         return F.Neg.apply(self)
+
+    def unsqueeze(self,dim=0):
+    """ 
+    Returns a new tensor with a dimension of size one inserted at the specified position. 
+    
+    NOTE: If you are not sure what this operation does, please revisit Recitation 0.
+    
+    Example:
+        a
+        [[1 2 3]
+         [4 5 6]]
+        
+        a.unsqueeze(0)
+        [[[1 2 3]
+          [4 5 6]]]
+        
+        a.unsqueeze(1)
+        [[[1 2 3]]
+        
+         [[4 5 6]]]
+        
+        a.unsqueeze(2)
+        [[[1]
+          [2]
+          [3]]
+        
+         [[4]
+          [5]
+          [6]]]
+    """
+    # TODO: Implement the unsqueeze operation
+    raise NotImplementedError('Use existing functions in functional.py to implement this operation!')
 
     def __add__(self, other):
         """Links "+" to the comp. graph
