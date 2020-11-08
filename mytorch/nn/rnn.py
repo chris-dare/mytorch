@@ -62,7 +62,22 @@ class RNNUnit(Module):
         # Perform matrix operations to construct the intermediary value from input and hidden tensors
         # Apply the activation on the resultant
         # Remeber to handle the case when hidden = None. Construct a tensor of appropriate size, filled with 0s to use as the hidden.
-        raise NotImplementedError("Implement Forward")
+        # note to self: formaula is given below
+        # h0t = tanh(weight_ih*input + bias_ih + weight_hh*hidden + bias_hh)
+        if not (type(x) == Tensor):
+            raise Exception(f"Input must be Tensor. Got {type(x)}")
+
+        if not hidden:
+            hidden_shape = (x.shape[0], self.hidden_size)
+            hidden = Tensor(
+                np.zeros(hidden_shape), requires_grad=True, is_parameter=True,
+            )
+
+        weighted_sum = (x @ self.weight_ih.T() + self.bias_ih) + (
+            (hidden @ self.weight_hh.T()) + self.bias_hh
+        )
+        weight_hprime = self.act(weighted_sum)
+        return weight_hprime
 
 
 class TimeIterator(Module):
