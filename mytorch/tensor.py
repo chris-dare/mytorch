@@ -242,9 +242,6 @@ class Tensor:
             [5]
             [6]]]
         """
-        return Tensor(
-            np.expand_dims(self.data, axis=dim),
-            requires_grad=self.requires_grad,
-            is_leaf=self.is_leaf,
-        )
+        shape = np.expand_dims(self.data, axis=dim).shape
+        return F.Reshape.apply(self, shape)
 
