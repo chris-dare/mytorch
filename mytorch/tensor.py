@@ -83,8 +83,7 @@ class Tensor:
         return F.Mul.apply(self, other)
 
     def __pow__(self, other):
-        raise (NotImplementedError)
-        # return F.Pow.apply(self,other)
+        return F.Pow.apply(self, other)
 
     def __sub__(self, other):
         return F.Sub.apply(self, other)
