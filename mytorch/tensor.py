@@ -36,8 +36,7 @@ def cat(seq, dim=0):
          [1 4 4 3]
          [3 2 3 1]]
     """
-    # TODO: invoke the appropriate function from functional.py. One-liner; don't overthink
-    raise NotImplementedError("TODO: Complete functional.Cat!")
+    return F.Cat.apply(*seq, dim)
 
 
 class Tensor:

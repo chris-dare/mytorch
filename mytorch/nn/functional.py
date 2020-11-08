@@ -14,8 +14,11 @@ class Cat(Function):
         NOTE: seq (list of tensors) contains the tensors that we wish to concatenate while dim (int) is the dimension along which we want to concatenate 
         """
         *seq, dim = args
+        requires_grad = max([el.requires_grad for el in seq])
 
-        raise NotImplementedError("Implement Cat.forward")
+        c = np.concatenate([el.data for el in seq], axis=dim)
+        c = tensor.Tensor(c, requires_grad=requires_grad, is_leaf=not requires_grad)
+        return c
 
     @staticmethod
     def backward(ctx, grad_output):
