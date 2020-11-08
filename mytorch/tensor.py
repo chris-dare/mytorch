@@ -242,8 +242,9 @@ class Tensor:
             [5]
             [6]]]
         """
-        # TODO: Implement the unsqueeze operation
-        raise NotImplementedError(
-            "Use existing functions in functional.py to implement this operation!"
+        return Tensor(
+            np.expand_dims(self.data, axis=dim),
+            requires_grad=self.requires_grad,
+            is_leaf=self.is_leaf,
         )
 
