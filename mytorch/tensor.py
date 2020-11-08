@@ -59,8 +59,7 @@ class Tensor:
         self.is_parameter = is_parameter
 
     def __getitem__(self, key):
-        # TODO: Implement the __getitem__ operation. Simply invoke the appropriate function from functional.py
-        raise NotImplementedError("TODO: Implement functional.Slice")
+        return F.Slice.apply(self, key)
 
     def __len__(self,):
         return len(self.data)

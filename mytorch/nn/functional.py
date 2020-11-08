@@ -116,7 +116,14 @@ class Slice(Function):
             x (tensor): Tensor object that we need to slice
             indices (int,list,Slice): This is the key passed to the __getitem__ function of the Tensor object when it is sliced using [ ] notation.
         """
-        raise NotImplementedError("Implemented Slice.forward")
+        if type(x) is not tensor.Tensor:
+            raise Exception(f"Expected tensor. Got {type(x)}")
+
+        ctx.save_for_backward(x)
+        out = tensor.Tensor(
+            x.data[indices], requires_grad=x.requires_grad, is_leaf=not x.requires_grad
+        )
+        return out
 
     @staticmethod
     def backward(ctx, grad_output):
