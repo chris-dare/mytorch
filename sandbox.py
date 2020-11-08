@@ -11,6 +11,7 @@ We've provided many test functions.
 For your own operations, implement tests for them here to easily
 debug your code."""
 
+
 def main():
     """Runs test methods in order shown below."""
     # test four basic ops
@@ -21,7 +22,6 @@ def main():
 
     # you probably want to verify
     # any other ops you create...
-
 
     # test autograd
     test1()
@@ -74,6 +74,7 @@ def test_add():
 
     return True
 
+
 def test_sub():
     """Tests that mytorch subtraction matches torch's subtraction"""
 
@@ -110,6 +111,7 @@ def test_sub():
     assert check_val(c_using_override, c_torch)
 
     return True
+
 
 def test_mul():
     """Tests that mytorch's elementwise multiplication matches torch's"""
@@ -237,6 +239,7 @@ def test1():
     assert check_val_and_grad(b, b_torch)
     assert check_val_and_grad(c, c_torch)
 
+
 # multiplication, requires grad
 def test2():
     a = Tensor.randn(1, 2, 3)
@@ -256,6 +259,7 @@ def test2():
     assert check_val_and_grad(a, a_torch)
     assert check_val_and_grad(b, b_torch)
     assert check_val_and_grad(c, c_torch)
+
 
 # addition, one arg requires grad
 def test3():
@@ -277,15 +281,16 @@ def test3():
     assert check_val_and_grad(b, b_torch)
     assert check_val_and_grad(c, c_torch)
 
+
 # the example from writeup
 def test4():
-    a = Tensor(1, requires_grad = True)
+    a = Tensor(1, requires_grad=True)
     a_torch = get_same_torch_tensor(a)
 
-    b = Tensor(2, requires_grad = True)
+    b = Tensor(2, requires_grad=True)
     b_torch = get_same_torch_tensor(b)
 
-    c = Tensor(3, requires_grad = True)
+    c = Tensor(3, requires_grad=True)
     c_torch = get_same_torch_tensor(c)
 
     d = a + a * b
@@ -306,13 +311,13 @@ def test4():
 
 # the example from writeup, more strict
 def test5():
-    a = Tensor(1, requires_grad = True)
+    a = Tensor(1, requires_grad=True)
     a_torch = get_same_torch_tensor(a)
 
-    b = Tensor(2, requires_grad = True)
+    b = Tensor(2, requires_grad=True)
     b_torch = get_same_torch_tensor(b)
 
-    c = Tensor(3, requires_grad = True)
+    c = Tensor(3, requires_grad=True)
     c_torch = get_same_torch_tensor(c)
 
     # d = a + a * b
@@ -371,15 +376,15 @@ def test6():
 # another fun test
 def test7():
     # a = 3
-    a = Tensor(3., requires_grad=False)
+    a = Tensor(3.0, requires_grad=False)
     a_torch = get_same_torch_tensor(a)
 
     # b = 4
-    b = Tensor(4., requires_grad=False)
+    b = Tensor(4.0, requires_grad=False)
     b_torch = get_same_torch_tensor(b)
 
     # c = 5
-    c = Tensor(5., requires_grad=True)
+    c = Tensor(5.0, requires_grad=True)
     c_torch = get_same_torch_tensor(c)
 
     # out = a * b + 3 * c
@@ -399,6 +404,7 @@ def test7():
     assert check_val_and_grad(z1, z1_torch)
     assert check_val_and_grad(z2, z2_torch)
     assert check_val_and_grad(out, out_torch)
+
 
 # non-tensor arguments
 def test8():
@@ -427,6 +433,7 @@ def test8():
 
 """General-use helper functions"""
 
+
 def get_same_torch_tensor(mytorch_tensor):
     """Returns a torch tensor with the same data/params as some mytorch tensor"""
     res = torch.tensor(mytorch_tensor.data).double()
@@ -439,20 +446,29 @@ def check_val_and_grad(mytorch_tensor, pytorch_tensor):
     
     Returns:
         boolean: False if not similar, True if similar"""
-    return check_val(mytorch_tensor, pytorch_tensor) and \
-           check_grad(mytorch_tensor, pytorch_tensor)
+    return check_val(mytorch_tensor, pytorch_tensor) and check_grad(
+        mytorch_tensor, pytorch_tensor
+    )
 
 
 def check_val(mytorch_tensor, pytorch_tensor, eps=1e-10):
     """Compares the data values of mytorch/torch tensors."""
     if not isinstance(pytorch_tensor, torch.DoubleTensor):
-        print("Warning: torch tensor is not a DoubleTensor. It is instead {}".format(pytorch_tensor.type()))
-        print("It is highly recommended that similarity testing is done with DoubleTensors as numpy arrays have 64-bit precision (like DoubleTensors)")
+        print(
+            "Warning: torch tensor is not a DoubleTensor. It is instead {}".format(
+                pytorch_tensor.type()
+            )
+        )
+        print(
+            "It is highly recommended that similarity testing is done with DoubleTensors as numpy arrays have 64-bit precision (like DoubleTensors)"
+        )
 
     if tuple(mytorch_tensor.shape) != tuple(pytorch_tensor.shape):
-        print("mytorch tensor and pytorch tensor has different shapes: {}, {}".format(
-            mytorch_tensor.shape, pytorch_tensor.shape
-        ))
+        print(
+            "mytorch tensor and pytorch tensor has different shapes: {}, {}".format(
+                mytorch_tensor.shape, pytorch_tensor.shape
+            )
+        )
         return False
 
     data_diff = np.abs(mytorch_tensor.data - pytorch_tensor.data.numpy())
@@ -468,7 +484,8 @@ def check_val(mytorch_tensor, pytorch_tensor, eps=1e-10):
 
         return False
 
-def check_grad(mytorch_tensor, pytorch_tensor, eps = 1e-10):
+
+def check_grad(mytorch_tensor, pytorch_tensor, eps=1e-10):
     """Compares the gradient of mytorch and torch tensors"""
     if mytorch_tensor.grad is None or pytorch_tensor_nograd(pytorch_tensor):
         if mytorch_tensor.grad is None and pytorch_tensor_nograd(pytorch_tensor):
@@ -488,8 +505,10 @@ def check_grad(mytorch_tensor, pytorch_tensor, eps = 1e-10):
         print("Grad differs by {}".format(grad_diff))
         return False
 
+
 def pytorch_tensor_nograd(pytorch_tensor):
     return not pytorch_tensor.requires_grad or not pytorch_tensor.is_leaf
+
 
 if __name__ == "__main__":
     main()
