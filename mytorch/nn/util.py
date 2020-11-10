@@ -30,7 +30,9 @@ class PackedSequence:
     def __iter__(self):
         yield from [self.data, self.sorted_indices, self.batch_sizes]
 
-    def __str__(self,):
+    def __str__(
+        self,
+    ):
         return "PackedSequece(data=tensor({}),sorted_indices={},batch_sizes={})".format(
             str(self.data), str(self.sorted_indices), str(self.batch_sizes)
         )
@@ -51,9 +53,10 @@ def pack_sequence(sequence):
     # TODO: INSTRUCTIONS
     # Find the sorted indices based on number of time steps in each sample
     lengths = [element.shape[0] for element in sequence]  # like in pytorch
-    sorted_indices = [
-        b[0] for b in sorted(enumerate(lengths), reverse=True, key=lambda i: i[1])
-    ]
+    sorted_indices = np.asarray(
+        [b[0] for b in sorted(enumerate(lengths), reverse=True, key=lambda i: i[1])]
+    )
+    # sorted_sequence = [sequence[i] for i in sorted_indices]
     batch_sizes = [0 for el in sequence]
     # Extract slices from each sample and properly order them for the construction of the packed tensor. __getitem__ you defined for Tensor class will come in handy
     print(f"lengths is {lengths}")
@@ -62,12 +65,13 @@ def pack_sequence(sequence):
     batch_sizes = [0 for el in range(max(lengths))]
 
     for i in range(max(lengths)):
-        for element in sequence:
+        for index in sorted_indices:
+            element = sequence[index]
             if len(element) > i:  # handle IndexError
-                ith_timestep_feature = element[i]
+                ith_timestep_feature = element[i].unsqueeze()
                 packed_sequence.append(ith_timestep_feature)
                 batch_sizes[i] = batch_sizes[i] + 1
-
+    batch_sizes = np.asarray(batch_sizes)  # convert to required type of ndarray
     # Use the tensor.cat function to create a single tensor from the re-ordered segements
     for el in packed_sequence:
         print(type(el))
@@ -75,7 +79,6 @@ def pack_sequence(sequence):
 
     # Finally construct the PackedSequence object
     # REMEMBER: All operations here should be able to construct a valid autograd graph.
-    # raise NotImplementedError("Implement pack_Sequence!")
     return PackedSequence(
         data=cat_seq.data, sorted_indices=sorted_indices, batch_sizes=batch_sizes
     )
@@ -84,7 +87,7 @@ def pack_sequence(sequence):
 def unpack_sequence(ps):
     """
     Given a PackedSequence, this unpacks this into the original list of tensors.
-    
+
     NOTE: Attempt this only after you have completed pack_sequence and understand how it works.
 
     Args:
@@ -100,4 +103,3 @@ def unpack_sequence(ps):
     # Re-arrange this list of tensor based on ps.sorted_indices
 
     raise NotImplementedError("Implement unpack_sequence")
-
