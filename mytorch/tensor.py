@@ -242,6 +242,8 @@ class Tensor:
             [5]
             [6]]]
         """
-        shape = np.expand_dims(self.data, axis=dim).shape
-        return F.Reshape.apply(self, shape)
+        old_shape = list(self.shape)
+        old_shape.insert(dim, 1)
+        old_shape = tuple(old_shape)
+        return F.Reshape.apply(self, old_shape)
 
