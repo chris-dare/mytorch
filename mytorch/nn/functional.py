@@ -9,9 +9,9 @@ class Cat(Function):
     def forward(ctx, *args):
         """
         Args:
-            args (list): [*seq, dim] 
-        
-        NOTE: seq (list of tensors) contains the tensors that we wish to concatenate while dim (int) is the dimension along which we want to concatenate 
+            args (list): [*seq, dim]
+
+        NOTE: seq (list of tensors) contains the tensors that we wish to concatenate while dim (int) is the dimension along which we want to concatenate
         """
         *seq, dim = args
         requires_grad = max([el.requires_grad for el in seq])

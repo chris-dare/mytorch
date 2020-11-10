@@ -7,11 +7,11 @@ class PackedSequence:
     """
     Encapsulates a list of tensors in a packed seequence form which can
     be input to RNN and GRU when working with variable length samples
-    
-    ATTENTION: The "argument batch_size" in this function should not be confused with the number of samples in the batch for which the PackedSequence is being constructed. PLEASE read the description carefully to avoid confusion. The choice of naming convention is to align it to what you will find in PyTorch. 
+
+    ATTENTION: The "argument batch_size" in this function should not be confused with the number of samples in the batch for which the PackedSequence is being constructed. PLEASE read the description carefully to avoid confusion. The choice of naming convention is to align it to what you will find in PyTorch.
 
     Args:
-        data (Tensor):( total number of timesteps (sum) across all samples in the batch, # features ) 
+        data (Tensor):( total number of timesteps (sum) across all samples in the batch, # features )
         sorted_indices (ndarray): (number of samples in the batch for which PackedSequence is being constructed,) - Contains indices in descending order based on number of timesteps in each sample
         batch_sizes (ndarray): (Max number of timesteps amongst all the sample in the batch,) - ith element of this ndarray represents no.of samples which have timesteps > i
     """
