@@ -73,8 +73,6 @@ def pack_sequence(sequence):
                 batch_sizes[i] = batch_sizes[i] + 1
     batch_sizes = np.asarray(batch_sizes)  # convert to required type of ndarray
     # Use the tensor.cat function to create a single tensor from the re-ordered segements
-    for el in packed_sequence:
-        print(type(el))
     cat_seq = tensor.cat(packed_sequence)
 
     # Finally construct the PackedSequence object
