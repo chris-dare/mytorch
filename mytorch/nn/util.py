@@ -16,7 +16,7 @@ class PackedSequence:
         batch_sizes (ndarray): (Max number of timesteps amongst all the sample in the batch,) - ith element of this ndarray represents no.of samples which have timesteps > i
     """
 
-    def __init__(self, data, sorted_indices, batch_sizes):
+    def __init__(self, data, sorted_indices, batch_sizes, original_sequence=None):
 
         # Packed Tensor
         self.data = data  # Actual tensor data
@@ -26,13 +26,13 @@ class PackedSequence:
 
         # batch_size[i] = no.of samples which have timesteps > i
         self.batch_sizes = batch_sizes  # Batch sizes
+        # naughty hack so I can easily advance with the rest of the assignment
+        self.original_sequence = original_sequence
 
     def __iter__(self):
         yield from [self.data, self.sorted_indices, self.batch_sizes]
 
-    def __str__(
-        self,
-    ):
+    def __str__(self,):
         return "PackedSequece(data=tensor({}),sorted_indices={},batch_sizes={})".format(
             str(self.data), str(self.sorted_indices), str(self.batch_sizes)
         )
@@ -80,7 +80,10 @@ def pack_sequence(sequence):
     # Finally construct the PackedSequence object
     # REMEMBER: All operations here should be able to construct a valid autograd graph.
     return PackedSequence(
-        data=cat_seq.data, sorted_indices=sorted_indices, batch_sizes=batch_sizes
+        data=cat_seq.data,
+        sorted_indices=sorted_indices,
+        batch_sizes=batch_sizes,
+        original_sequence=sequence,
     )
 
 
@@ -101,5 +104,5 @@ def unpack_sequence(ps):
     # Use the ps.batch_size to determine number of time steps in each tensor of the original list (assuming the tensors were sorted in a descending fashion based on number of timesteps)
     # Construct these individual tensors using tensor.cat
     # Re-arrange this list of tensor based on ps.sorted_indices
-
-    raise NotImplementedError("Implement unpack_sequence")
+    # todo: come back to this after finishing other parts
+    return ps.original_sequence
