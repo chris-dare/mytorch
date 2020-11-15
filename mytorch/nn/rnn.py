@@ -180,5 +180,12 @@ class RNN(TimeIterator):
 
     def __init__(self, input_size, hidden_size, nonlinearity="tanh"):
         # TODO: Properly Initialize the RNN class
-        raise NotImplementedError("Initialize properly!")
+        # raise NotImplementedError("Initialize properly!")
+
+        super(RNN, self).__init__(
+            basic_unit=RNNUnit,
+            input_size=input_size,
+            hidden_size=hidden_size,
+            nonlinearity=nonlinearity,
+        )
 
