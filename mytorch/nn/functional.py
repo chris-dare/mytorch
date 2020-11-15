@@ -35,7 +35,8 @@ class Pow(Function):
             )
 
         # Save inputs to access later in backward pass.
-        ctx.save_for_backward(a, b)
+        exponent_tensor = tensor.Tensor(np.ones(a.shape) * b)
+        ctx.save_for_backward(a, exponent_tensor)
 
         # Create addition output and sets `requires_grad and `is_leaf`
         # (see appendix A for info on those params)
@@ -49,17 +50,14 @@ class Pow(Function):
     def backward(ctx, grad_output):
         # retrieve forward inputs that we stored
         a, b = ctx.saved_tensors
-
         # calculate gradient of output w.r.t. each input
         # dL/da = dout/da * dL/dout
-        grad_a = tensor.Tensor(b * a.data) * grad_output.data
-        # dL/db = dout/db * dL/dout
-        grad_b = np.ones(b.shape) * grad_output.data
+        grad_a = (b.data * a.data) * grad_output.data
 
-        # the order of gradients returned should match the order of the arguments
-        grad_a = tensor.Tensor(grad_a, a.shape)
-        grad_b = tensor.Tensor(grad_b, b.shape)
-        return grad_a, grad_b
+        grad_a = tensor.Tensor(
+            grad_a, requires_grad=a.requires_grad, is_leaf=not a.requires_grad
+        )
+        return grad_a
 
 
 def unbroadcast(grad, shape, to_keep=0):
