@@ -93,8 +93,33 @@ class GRUUnit(Module):
         # TODO: INSTRUCTIONS
         # Perform matrix operations to construct the intermediary value from input and hidden tensors
         # Remeber to handle the case when hidden = None. Construct a tensor of appropriate size, filled with 0s to use as the hidden.
-
-        raise NotImplementedError("Implement Forward")
+        if not hidden:
+            hidden_shape = (input.shape[0], self.hidden_size)
+            hidden = Tensor(
+                np.zeros(hidden_shape), requires_grad=True, is_parameter=True,
+            )
+        self.sigmoid = Sigmoid()
+        self.tanh = Tanh()
+        r_t = self.sigmoid(
+            (input @ self.weight_ir.T())
+            + self.bias_ir
+            + (hidden @ self.weight_hr.T())
+            + self.bias_hr
+        )
+        z_t = self.sigmoid(
+            (input @ self.weight_iz.T())
+            + self.bias_iz
+            + (hidden @ self.weight_hz.T())
+            + self.bias_hz
+        )
+        n_t = self.tanh(
+            (input @ self.weight_in.T())
+            + self.bias_in
+            + (r_t * ((hidden @ self.weight_hn.T()) + self.bias_hn))
+        )
+        one = Tensor(1, requires_grad=True, is_parameter=True,)
+        h_t = (one - z_t) * (n_t + (z_t * hidden))
+        return h_t
 
 
 class GRU(TimeIterator):
