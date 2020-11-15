@@ -1,6 +1,6 @@
 import numpy as np
 
-import mytorch.tensor as tensor
+import mytorch as tensor
 from mytorch.autograd_engine import Function
 
 
