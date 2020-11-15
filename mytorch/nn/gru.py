@@ -81,7 +81,7 @@ class GRUUnit(Module):
     def __call__(self, input, hidden=None):
         return self.forward(input, hidden)
 
-    def forward(self, input, hidden=None):
+    def forward(self, input: Tensor, hidden=None):
         """
         Args:
             input (Tensor): (effective_batch_size,input_size)
