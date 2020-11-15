@@ -78,7 +78,7 @@ def pack_sequence(sequence):
     # Finally construct the PackedSequence object
     # REMEMBER: All operations here should be able to construct a valid autograd graph.
     return PackedSequence(
-        data=cat_seq.data,
+        data=cat_seq,
         sorted_indices=sorted_indices,
         batch_sizes=batch_sizes,
         original_sequence=sequence,
