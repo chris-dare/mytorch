@@ -131,5 +131,7 @@ class GRU(TimeIterator):
     """
 
     def __init__(self, input_size, hidden_size):
-        raise NotImplementedError("Initialize properly!")
+        super(GRU, self).__init__(
+            basic_unit=GRUUnit, input_size=input_size, hidden_size=hidden_size,
+        )
 
