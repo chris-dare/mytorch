@@ -118,7 +118,7 @@ class GRUUnit(Module):
             + (r_t * ((hidden @ self.weight_hn.T()) + self.bias_hn))
         )
         one = Tensor(1, requires_grad=True, is_parameter=True,)
-        h_t = (one - z_t) * (n_t + (z_t * hidden))
+        h_t = (one - z_t) * n_t + (z_t * hidden)
         return h_t
 
 
