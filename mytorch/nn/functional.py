@@ -14,6 +14,9 @@ class Cat(Function):
         NOTE: seq (list of tensors) contains the tensors that we wish to concatenate while dim (int) is the dimension along which we want to concatenate
         """
         *seq, dim = args
+        # save for backwards
+        dim_tensor = tensor.Tensor(np.asarray([dim]))
+        ctx.save_for_backward(*seq, dim_tensor)
         requires_grad = max([el.requires_grad for el in seq])
 
         c = np.concatenate([el.data for el in seq], axis=dim)
@@ -22,7 +25,25 @@ class Cat(Function):
 
     @staticmethod
     def backward(ctx, grad_output):
-        raise NotImplementedError("Implement Cat.backward")
+        # return grad_output
+        *saved_tensors, dim = ctx.saved_tensors
+        dim = max(dim.data)
+        # create split list
+        split_list = [x.data.shape[dim] for x in saved_tensors]
+        if len(split_list) > 0:
+            counter = 0
+            for i in range(len(split_list)):
+                counter = counter + split_list[i]
+                split_list[i] = counter
+            # remove the last element. not needed to split
+            split_list.pop()
+            gradients = [
+                tensor.Tensor(x, requires_grad=True, is_leaf=False)
+                for x in np.split(grad_output.data, split_list, dim)
+            ]
+            return (*gradients, None)
+        else:
+            return grad_output
 
 
 class Pow(Function):
