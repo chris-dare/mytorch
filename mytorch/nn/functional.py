@@ -138,7 +138,7 @@ class Slice(Function):
         if type(x) is not tensor.Tensor:
             raise Exception(f"Expected tensor. Got {type(x)}")
 
-        ctx.save_for_backward(x)
+        ctx.save_for_backward(x, tensor.Tensor(np.asarray(indices)))
         out = tensor.Tensor(
             x.data[indices], requires_grad=x.requires_grad, is_leaf=not x.requires_grad
         )
@@ -146,7 +146,11 @@ class Slice(Function):
 
     @staticmethod
     def backward(ctx, grad_output):
-        raise NotImplementedError("Implemented Slice.backward")
+        x, indices = ctx.saved_tensors
+        gradient = np.zeros(x.shape)
+        index = tuple(np.reshape(indices.data, [1, -1])[0])
+        gradient[index] = grad_output.data
+        return tensor.Tensor(gradient)
 
 
 class Log(Function):
