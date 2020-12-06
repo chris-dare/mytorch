@@ -59,8 +59,8 @@ def pack_sequence(sequence):
     # sorted_sequence = [sequence[i] for i in sorted_indices]
     batch_sizes = [0 for el in sequence]
     # Extract slices from each sample and properly order them for the construction of the packed tensor. __getitem__ you defined for Tensor class will come in handy
-    print(f"lengths is {lengths}")
-    print(f"sorted_indices is {sorted_indices}")
+    # print(f"lengths is {lengths}")
+    # print(f"sorted_indices is {sorted_indices}")
     packed_sequence = []
     batch_sizes = [0 for el in range(max(lengths))]
 

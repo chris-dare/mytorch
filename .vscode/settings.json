@@ -1,0 +1,4 @@
+{
+    "python.formatting.blackPath": "/home/dex/anaconda3/envs/ai/bin/black",
+    "python.formatting.provider": "black"
+}
