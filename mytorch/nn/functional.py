@@ -607,7 +607,7 @@ class Conv1d(Function):
         raise NotImplementedError("Implement functional.Conv1d.backward()!")
 
 
-def get_conv1d_output_size(input_size, kernel_size, stride):
+def get_conv1d_output_size(input_size: int, kernel_size: int, stride: int):
     """Gets the size of a Conv1d output.
 
     Notes:
@@ -627,8 +627,10 @@ def get_conv1d_output_size(input_size, kernel_size, stride):
     Returns:
         int: size of the output as an int (not a Tensor or np.array)
     """
-    # TODO: implement the formula in the writeup. One-liner; don't overthink
-    raise NotImplementedError("TODO: Complete functional.get_conv1d_output_size()!")
+
+    # simple implementation without accounting for padding et. al
+    output_size = ((input_size - kernel_size) / stride) + 1
+    return int(output_size)
 
 
 class Sigmoid(Function):
