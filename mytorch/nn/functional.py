@@ -590,16 +590,29 @@ class Conv1d(Function):
         # TODO: Save relevant variables for backward pass
 
         # TODO: Get output size by finishing & calling get_conv1d_output_size()
-        # output_size = get_conv1d_output_size(None, None, None)
+        output_size = get_conv1d_output_size(input_size, kernel_size, stride)
 
         # TODO: Initialize output with correct size
-        # out = np.zeros(())
+        out = np.zeros((batch_size, out_channel, output_size))
 
         # TODO: Calculate the Conv1d output.
         # Remember that we're working with np.arrays; no new operations needed.
 
+        for batch in range(batch_size):
+            for conv_filter in range(out_channel):
+                output_dim_2_cell = 0
+                for step in range(0, (input_size - kernel_size + 1), stride):
+                    segment = x[batch, :, step : step + kernel_size].data.flatten()
+                    segment_weight = weight[conv_filter].data.flatten()
+                    z = np.inner(segment_weight, segment) + bias.data[conv_filter]
+                    out[batch, conv_filter, output_dim_2_cell] = z
+                    output_dim_2_cell += 1
+
         # TODO: Put output into tensor with correct settings and return
-        raise NotImplementedError("Implement functional.Conv1d.forward()!")
+        out = tensor.Tensor(
+            out, requires_grad=x.requires_grad, is_leaf=not x.requires_grad
+        )
+        return out
 
     @staticmethod
     def backward(ctx, grad_output):
